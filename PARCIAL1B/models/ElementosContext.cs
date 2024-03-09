@@ -10,7 +10,12 @@ namespace PARCIAL1B.models
 
             }
 
-            public DbSet<Equipos> Equipos { get; set; }
+            public DbSet<Elementos> Elementos { get; set; }
+            public DbSet<ElementosPorPlato> ElementosPorPlato { get; set; }
+            public DbSet<Platos> Platos { get; set; }
+            public DbSet<PlatosPorCombo> PlatosPorCombo { get; set; }
+
+        
 
 
         
