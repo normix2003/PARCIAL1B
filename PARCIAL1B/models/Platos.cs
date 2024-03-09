@@ -4,7 +4,7 @@ namespace PARCIAL1B.models
 {
     public class Platos
     {
-        public class Elementos
+        public class Platos
         {
             [Key]
             public int PlatoID { get; set; }
