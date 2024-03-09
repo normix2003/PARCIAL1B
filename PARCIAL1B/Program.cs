@@ -11,6 +11,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
+//inyeccion por dependencia del string de conexion al contexto
+builder.Services.AddDbContext<ElementosContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("equiposDbConnection")));
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
