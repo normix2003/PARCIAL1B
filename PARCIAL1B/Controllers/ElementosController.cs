@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PARCIAL1B.models;
 
 namespace PARCIAL1B.Controllers
 {
@@ -9,50 +10,38 @@ namespace PARCIAL1B.Controllers
     public class ElementosController : ControllerBase
     {
 
-        private readonly equiposContext _equiposContext;
-        public equiposController(equiposContext equiposContext)
+        private readonly ElementosContext _elementosContext;
+        public ElementosController( ElementosContext elementosContext)
         {
-            _equiposContext = equiposContext;
+            _elementosContext = elementosContext;
         }
 
         [HttpGet]
         [Route("GetAll")]
         public IActionResult Get()
         {
-            List<Equipos> ListadoEquipo = (from e in _equiposContext.Equipos
+            List<Elementos> ListadoElementos = (from e in _elementosContext.Elementos
                                            select e).ToList();
-            if (ListadoEquipo.Count == 0)
+            if (ListadoElementos.Count == 0)
             { return NotFound(); }
 
-            return Ok(ListadoEquipo);
+            return Ok(ListadoElementos);
 
         }
         [HttpGet]
         [Route("GetById/{id}")]
         public IActionResult Get(int id)
         {
-            Equipos? equipo = (from e in _equiposContext?.Equipos where e.id_equipos == id select e).FirstOrDefault();
+            Elementos? elementos = (from e in _elementosContext?.Elementos where e.ElementoID == id select e).FirstOrDefault();
 
-            if (equipo == null)
+            if (elementos == null)
             {
                 return NotFound();
             }
 
-            return Ok(equipo);
+            return Ok(elementos);
         }
 
-        //BUSCAR POR DESCRIPCION 
-        [HttpGet]
-        [Route("Find/{filtro}")]
-        public IActionResult FindByDescription(string filtro)
-        {
-            Equipos? equipo = (from e in _equiposContext.Equipos where e.descripcion.Contains(filtro) select e).FirstOrDefault();
-
-            if (equipo == null)
-            { return NotFound(); }
-
-            return Ok(equipo);
-        }
 
 
 
@@ -61,14 +50,14 @@ namespace PARCIAL1B.Controllers
 
         [HttpPost]
         [Route("add")]
-        public IActionResult GuardarEquipo([FromBody] Equipos equipos)
+        public IActionResult GuardarEquipo([FromBody] Elementos equipos)
         {
             try
 
             {
 
-                _equiposContext.Equipos.Add(equipos);
-                _equiposContext.SaveChanges();
+                _elementosContext.Elementos.Add(equipos);
+                _elementosContext.SaveChanges();
 
                 return Ok(equipos);
 
@@ -88,34 +77,36 @@ namespace PARCIAL1B.Controllers
 
         [HttpPut]
         [Route("actualizar/{id}")]
-        public ActionResult ActualizarEquipo(int id, [FromBody] Equipos equipoModificar)
+        public ActionResult ActualizarEquipo(int id, [FromBody] Elementos elementoModificar)
         {
-            Equipos? equipoActual = (from e in _equiposContext.Equipos where e.id_equipos == id select e).FirstOrDefault();
+            Elementos? elementoActual = (from e in _elementosContext.Elementos where e.ElementoID == id select e).FirstOrDefault();
 
-            if (equipoActual == null)
+            if (elementoActual == null)
             {
                 return NotFound();
             }
 
-            equipoActual.nombre = equipoModificar.nombre;
-            equipoActual.descripcion = equipoModificar.descripcion;
-            equipoActual.marca_id = equipoModificar.marca_id;
-            equipoActual.vida_util = equipoModificar.vida_util;
-            equipoActual.anio_compra = equipoModificar.anio_compra;
-            equipoActual.costo = equipoModificar.costo;
+            elementoActual.ElementoID = elementoModificar.ElementoID;
+            elementoActual.EmpresaID = elementoModificar.EmpresaID;
+            elementoActual.CantidadMinima = elementoModificar.CantidadMaxima;
+            elementoActual.CantidadMinima = elementoModificar.CantidadMinima;
+            elementoActual.PlatoID = elementoModificar.PlatoID;
+            elementoActual.Costo = elementoModificar.Costo;
+            elementoActual.Estado= elementoModificar.Estado;
+            elementoActual.Elemento= elementoModificar.Elemento;
 
-            _equiposContext.Entry(equipoActual).State = EntityState.Modified;
+            _elementosContext.Entry(elementoActual).State = EntityState.Modified;
 
-            _equiposContext.SaveChanges();
+            _elementosContext.SaveChanges();
 
-            return Ok(equipoActual);
+            return Ok(elementoActual);
         }
 
         [HttpDelete]
         [Route("eliminar/{id}")]
-        public ActionResult EliminarEquipo(int id)
+        public ActionResult EliminarElemento(int id)
         {
-            Equipos? equipo = (from e in _equiposContext.Equipos where e.id_equipos == id select e).FirstOrDefault();
+            Elementos? equipo = (from e in _elementosContext.Elementos where e.ElementoID == id select e).FirstOrDefault();
 
             // Verificamos que exista el registro según su ID
             if (equipo == null)
@@ -123,9 +114,9 @@ namespace PARCIAL1B.Controllers
                 return NotFound();
             }
 
-            _equiposContext.Equipos.Attach(equipo);
-            _equiposContext.Equipos.Remove(equipo);
-            _equiposContext.SaveChanges();
+            _elementosContext.Elementos.Attach(equipo);
+            _elementosContext.Elementos.Remove(equipo);
+            _elementosContext.SaveChanges();
 
             return Ok(equipo);
         }
