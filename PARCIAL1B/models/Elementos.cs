@@ -14,7 +14,7 @@ namespace PARCIAL1B.models
         public int? CantidadMinima { get; set; }
 
         public int? CantidadMaxima { get; set; }
-        public int? Costo { get; set; }
+        public int? Costvghvkuvugvko { get; set; }
         public int? Estado{ get; set; }
       
     }
