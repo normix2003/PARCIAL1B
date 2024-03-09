@@ -28,7 +28,7 @@ namespace PARCIAL1B.Controllers
                 return NotFound();
             }
 
-            return Ok(listadoPlatos);
+            return Ok(listadoPlats);
         }
     }
 }
