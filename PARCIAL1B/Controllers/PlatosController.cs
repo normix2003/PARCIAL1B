@@ -78,12 +78,12 @@ namespace PARCIAL1B.Controllers
                 return NotFound();
             }
 
-            PlatosActual.ElementoID = PlatosModificar.ElementoID;
+            PlatosActual.NombrePlato = PlatosModificar.NombrePlato;
             PlatosActual.EmpresaID = PlatosModificar.EmpresaID;
-            PlatosActual.CantidadMinima = PlatosModificar.CantidadMaxima;
-            PlatosActual.CantidadMinima = PlatosModificar.CantidadMinima;
+            PlatosActual.Precio = PlatosModificar.Precio;
+            PlatosActual.DescripcionPlato = PlatosModificar.DescripcionPlato;
             PlatosActual.PlatoID = PlatosModificar.PlatoID;
-            PlatosActual.Costo = PlatosModificar.Costo;
+            PlatosActual.GrupoID = PlatosModificar.GrupoID;
             
 
             _elementosContext.Entry(PlatosActual).State = EntityState.Modified;
