@@ -44,16 +44,16 @@ namespace PARCIAL1B.Controllers
 
         [HttpPost]
         [Route("add")]
-        public IActionResult GuardarEquipo([FromBody] Elementos equipos)
+        public IActionResult GuardarElementos([FromBody] Elementos Elementos)
         {
             try
 
             {
 
-                _elementosContext.Elementos.Add(equipos);
+                _elementosContext.Elementos.Add(Elementos);
                 _elementosContext.SaveChanges();
 
-                return Ok(equipos);
+                return Ok(Elementos);
 
             }
 
@@ -71,7 +71,7 @@ namespace PARCIAL1B.Controllers
 
         [HttpPut]
         [Route("actualizar/{id}")]
-        public ActionResult ActualizarEquipo(int id, [FromBody] Elementos elementoModificar)
+        public ActionResult ActualizarElementos(int id, [FromBody] Elementos elementoModificar)
         {
             Elementos? elementoActual = (from e in _elementosContext.Elementos where e.ElementoID == id select e).FirstOrDefault();
 
@@ -100,19 +100,19 @@ namespace PARCIAL1B.Controllers
         [Route("eliminar/{id}")]
         public ActionResult EliminarElemento(int id)
         {
-            Elementos? equipo = (from e in _elementosContext.Elementos where e.ElementoID == id select e).FirstOrDefault();
+            Elementos? Elementos = (from e in _elementosContext.Elementos where e.ElementoID == id select e).FirstOrDefault();
 
             // Verificamos que exista el registro según su ID
-            if (equipo == null)
+            if (Elementos == null)
             {
                 return NotFound();
             }
 
-            _elementosContext.Elementos.Attach(equipo);
-            _elementosContext.Elementos.Remove(equipo);
+            _elementosContext.Elementos.Attach(Elementos);
+            _elementosContext.Elementos.Remove(Elementos);
             _elementosContext.SaveChanges();
 
-            return Ok(equipo);
+            return Ok(Elementos);
         }
 
 
