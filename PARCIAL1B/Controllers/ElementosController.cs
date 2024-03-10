@@ -11,37 +11,31 @@ namespace PARCIAL1B.Controllers
     {
 
         private readonly ElementosContext _elementosContext;
-        public ElementosController( ElementosContext elementosContext)
+        public ElementosController(ElementosContext elementosContext)
         {
             _elementosContext = elementosContext;
         }
+
+
+
+        //CRUD
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //Obtener
 
         [HttpGet]
         [Route("GetAll")]
         public IActionResult Get()
         {
             List<Elementos> ListadoElementos = (from e in _elementosContext.Elementos
-                                           select e).ToList();
+                                                select e).ToList();
             if (ListadoElementos.Count == 0)
             { return NotFound(); }
 
             return Ok(ListadoElementos);
 
         }
-        [HttpGet]
-        [Route("GetById/{id}")]
-        public IActionResult Get(int id)
-        {
-            Elementos? elementos = (from e in _elementosContext?.Elementos where e.ElementoID == id select e).FirstOrDefault();
-
-            if (elementos == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(elementos);
-        }
-
 
 
 
@@ -92,8 +86,8 @@ namespace PARCIAL1B.Controllers
             elementoActual.CantidadMinima = elementoModificar.CantidadMinima;
             elementoActual.PlatoID = elementoModificar.PlatoID;
             elementoActual.Costo = elementoModificar.Costo;
-            elementoActual.Estado= elementoModificar.Estado;
-            elementoActual.Elemento= elementoModificar.Elemento;
+            elementoActual.Estado = elementoModificar.Estado;
+            elementoActual.Elemento = elementoModificar.Elemento;
 
             _elementosContext.Entry(elementoActual).State = EntityState.Modified;
 
@@ -101,7 +95,7 @@ namespace PARCIAL1B.Controllers
 
             return Ok(elementoActual);
         }
-
+        //Eliminar
         [HttpDelete]
         [Route("eliminar/{id}")]
         public ActionResult EliminarElemento(int id)
@@ -120,5 +114,25 @@ namespace PARCIAL1B.Controllers
 
             return Ok(equipo);
         }
+
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        [HttpGet]
+        [Route("GetById/{id}")]
+        public IActionResult Get(int id)
+        {
+            Elementos? elementos = (from e in _elementosContext?.Elementos where e.ElementoID == id select e).FirstOrDefault();
+
+            if (elementos == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(elementos);
+        }
+
+
     }
+
 }
