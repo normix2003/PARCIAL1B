@@ -73,18 +73,17 @@ namespace PARCIAL1B.Controllers
         [Route("actualizar/{id}")]
         public ActionResult ActualizarElementos(int id, [FromBody] Elementos elementoModificar)
         {
-            Elementos? elementoActual = (from e in _elementosContext.Elementos where e.ElementoID == id select e).FirstOrDefault();
+            Elementos? elementoActual = (from e in _elementosContext.Elementos where e.ElementosID == id select e).FirstOrDefault();
 
             if (elementoActual == null)
             {
                 return NotFound();
             }
 
-            elementoActual.ElementoID = elementoModificar.ElementoID;
+            elementoActual.ElementosID = elementoModificar.ElementosID;
             elementoActual.EmpresaID = elementoModificar.EmpresaID;
-            elementoActual.CantidadMinima = elementoModificar.CantidadMaxima;
+            elementoActual.UnidadMedida = elementoModificar.UnidadMedida;
             elementoActual.CantidadMinima = elementoModificar.CantidadMinima;
-            elementoActual.PlatoID = elementoModificar.PlatoID;
             elementoActual.Costo = elementoModificar.Costo;
             elementoActual.Estado = elementoModificar.Estado;
             elementoActual.Elemento = elementoModificar.Elemento;
@@ -100,7 +99,7 @@ namespace PARCIAL1B.Controllers
         [Route("eliminar/{id}")]
         public ActionResult EliminarElemento(int id)
         {
-            Elementos? Elementos = (from e in _elementosContext.Elementos where e.ElementoID == id select e).FirstOrDefault();
+            Elementos? Elementos = (from e in _elementosContext.Elementos where e.ElementosID == id select e).FirstOrDefault();
 
             // Verificamos que exista el registro según su ID
             if (Elementos == null)
@@ -117,12 +116,44 @@ namespace PARCIAL1B.Controllers
 
 
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        [HttpGet]
+        [Route("Find/{filtro}")]
+        public IActionResult FindByDescription(string filtro)
+        {
+            Elementos? elementos = (from e in _elementosContext.Elementos where e.Elemento.Contains(filtro) select e).FirstOrDefault();
+
+            if (elementos == null)
+            { return NotFound(); }
+
+            return Ok(elementos);
+        }
+
         [HttpGet]
         [Route("GetById/{id}")]
         public IActionResult Get(int id)
         {
-            Elementos? elementos = (from e in _elementosContext?.Elementos where e.ElementoID == id select e).FirstOrDefault();
+            var elementos = (from e in _elementosContext?.Elementos
+                                    join epp in _elementosContext?.ElementosPorPlato
+                                        on e.ElementosID equals epp.ElementoID
+                                    join p in _elementosContext?.Platos
+                                        on epp.PlatoID equals p.PlatoID
+
+
+                                    where e.ElementosID == id 
+                                    
+                                    select new {
+                                      e.EmpresaID,
+                                      e.CantidadMinima,
+                                      e.UnidadMedida,
+                                      e.Costo,
+                                      e.Elemento,
+                                      p.PlatoID,
+                                      p.NombrePlato,
+                                      p.Precio
+                                    }
+                                    
+                                    
+                                    ).ToList();
 
             if (elementos == null)
             {
@@ -131,8 +162,6 @@ namespace PARCIAL1B.Controllers
 
             return Ok(elementos);
         }
-
-
     }
 
 }

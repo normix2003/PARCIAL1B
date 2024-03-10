@@ -15,8 +15,6 @@ namespace PARCIAL1B.models
             public DbSet<Platos> Platos { get; set; }
             public DbSet<PlatosPorCombo> PlatosPorCombo { get; set; }
 
-        
-
 
         
     }

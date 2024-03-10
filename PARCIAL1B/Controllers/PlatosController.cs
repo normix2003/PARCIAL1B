@@ -114,5 +114,54 @@ namespace PARCIAL1B.Controllers
             return Ok(Platos);
         }
 
+        
+
+        [HttpGet]
+        [Route("Find/{filtro}")]
+        public IActionResult FindByDescription(string filtro)
+        {
+            Platos? platos = (from e in _elementosContext.Platos where e.NombrePlato.Contains (filtro) select e).FirstOrDefault();
+
+            if (platos == null)
+            { return NotFound(); }
+
+            return Ok(platos);
+        }
+
+        [HttpGet]
+        [Route("GetById/{id}")]
+        public IActionResult Get(int id)
+        {
+            var elementos = (from e in _elementosContext?.Elementos
+                             join epp in _elementosContext?.ElementosPorPlato
+                                 on e.ElementosID equals epp.ElementoID
+                             join p in _elementosContext?.Platos
+                                 on epp.PlatoID equals p.PlatoID
+
+
+                             where e.ElementosID == null
+
+                             select new
+                             {
+                                 p.PlatoID,
+                                 p.NombrePlato,
+                                 p.Precio,
+                                 p.DescripcionPlato
+                             }
+
+
+                                    ).ToList();
+
+            if (elementos == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(elementos);
+        }
+
+
+
+
     }
 }
